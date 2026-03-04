@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michael Curtis | Sound System Design, Education & Content Creation</title>
+    <style>
+        :root {
+            --deep-teal: #1B4B5A;
+            --coral: #E8685A;
+            --sage: #8BB8AE;
+            --tan: #B09A70;
+            --cream: #F5F0EA;
+            --dark: #1a1a1a;
+            --text: #333;
+            --text-light: #666;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: var(--cream);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(27, 75, 90, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 0.75rem 0;
+        }
+
+        nav .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .nav-logo {
+            height: 36px;
+            border-radius: 4px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--coral);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--deep-teal) 0%, #0f3440 100%);
+            color: var(--white);
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .hero-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center 20%;
+            border: 4px solid var(--sage);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .hero .tagline {
+            font-size: 1.2rem;
+            color: var(--sage);
+            font-weight: 400;
+            max-width: 600px;
+        }
+
+        .hero-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        .hero-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .hero-links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--coral);
+            color: var(--white);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--white);
+            padding: 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .stats-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-item .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--deep-teal);
+        }
+
+        .stat-item .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 0.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--sage);
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: var(--deep-teal);
+            font-weight: 700;
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--deep-teal);
+            color: var(--white);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            color: var(--deep-teal);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card p, .card li {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .card ul {
+            padding-left: 1.25rem;
+        }
+
+        .card li {
+            margin-bottom: 0.3rem;
+        }
+
+        /* Design Approach */
+        .approach-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .approach-step {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: var(--coral);
+            color: var(--white);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .approach-step h3 {
+            color: var(--deep-teal);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .approach-step p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Two Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .skill-category h4 {
+            color: var(--deep-teal);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            background: var(--cream);
+            color: var(--deep-teal);
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin: 0.2rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        a.skill-tag:hover {
+            background: var(--deep-teal);
+            color: var(--white);
+        }
+
+        /* Live Shows */
+        .shows-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .show-role {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--coral);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Highlight Card */
+        .highlight-card {
+            background: linear-gradient(135deg, var(--deep-teal) 0%, #0f3440 100%);
+            color: var(--white);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-card h3 {
+            color: var(--sage);
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-card p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+        }
+
+        /* RCF Vision Section */
+        .rcf-section {
+            background: linear-gradient(135deg, var(--deep-teal) 0%, #0f3440 100%);
+            color: var(--white);
+            padding: 4rem 2rem;
+            margin-top: 2rem;
+        }
+
+        .rcf-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .rcf-section .section-header {
+            border-bottom-color: var(--sage);
+        }
+
+        .rcf-section .section-header h2 {
+            color: var(--white);
+        }
+
+        .rcf-section .section-icon {
+            background: var(--coral);
+        }
+
+        .rcf-intro {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 2rem;
+            max-width: 800px;
+        }
+
+        .vision-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .vision-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 1.75rem;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .vision-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .vision-card .vision-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .vision-card h3 {
+            color: var(--sage);
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .vision-card p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Contact/Footer */
+        .footer {
+            background: var(--dark);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            font-size: 0.9rem;
+        }
+
+        .contact-item a {
+            color: var(--sage);
+            text-decoration: none;
+        }
+
+        .contact-item a:hover {
+            color: var(--coral);
+        }
+
+        .footer-note {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 0.75rem;
+            }
+
+            nav a {
+                font-size: 0.8rem;
+            }
+
+            .hero {
+                padding: 7rem 1.5rem 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero .tagline {
+                font-size: 1rem;
+            }
+
+            .stats-inner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .approach-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .two-col,
+            .skills-grid,
+            .shows-grid,
+            .vision-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-content {
+                padding: 2rem 1.25rem;
+            }
+
+            .contact-grid {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav .nav-inner {
+                padding: 0 1rem;
+            }
+
+            nav ul {
+                gap: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 1.7rem;
+            }
+
+            .hero-photo {
+                width: 140px;
+                height: 140px;
+            }
+
+            .hero-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div class="nav-inner">
+        <img src="resources/logo-web.png" alt="MKC" class="nav-logo">
+        <ul>
+            <li><a href="#design">Design</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#shows">Shows</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#rcf-vision">RCF Vision</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-content">
+        <img src="resources/headshot-web.jpg" alt="Michael Curtis" class="hero-photo">
+        <h1>Michael Curtis</h1>
+        <p class="tagline">Sound System Design, Education & Content Creation</p>
+        <div class="hero-links">
+            <a href="https://www.producedbymkc.com" target="_blank" class="btn-primary">producedbymkc.com</a>
+            <a href="https://www.youtube.com/channel/UCrJ_l4YMvsCXGkAwhOjLZdQ" target="_blank" class="btn-secondary">YouTube Channel</a>
+            <a href="mailto:michael@producedbymkc.com" class="btn-secondary">Get in Touch</a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-bar">
+    <div class="stats-inner">
+        <div class="stat-item">
+            <div class="stat-number">140+</div>
+            <div class="stat-label">YouTube Videos</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">3.8M+</div>
+            <div class="stat-label">Video Views</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">47K+</div>
+            <div class="stat-label">Subscribers</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">600+</div>
+            <div class="stat-label">Course Students</div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <!-- System Design -->
+    <section class="section" id="design">
+        <div class="section-header">
+            <div class="section-icon">&#9881;</div>
+            <h2>System Design & Engineering</h2>
+        </div>
+
+        <div class="highlight-card">
+            <h3>Featured Project: Walmart Sam Walton Hall</h3>
+            <p>Designed and implemented a world-class ST 2110 audio-over-IP system at Walmart's Sam Walton Hall &mdash; a flagship corporate venue hosting events with top-tier talent and executive broadcasts.</p>
+        </div>
+
+        <div class="approach-steps">
+            <div class="approach-step">
+                <div class="step-number">1</div>
+                <h3>Understand</h3>
+                <p>Client goals and desired outcomes</p>
+            </div>
+            <div class="approach-step">
+                <div class="step-number">2</div>
+                <h3>Solve</h3>
+                <p>Predictive design and problem-solving to meet those goals</p>
+            </div>
+            <div class="approach-step">
+                <div class="step-number">3</div>
+                <h3>Verify</h3>
+                <p>Confirm results with data and ears</p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 1rem;">
+            <h3>Design Portfolio</h3>
+            <p>Since 2024, I've designed and commissioned numerous sound systems across corporate, worship, and live event environments. My work includes full system design, prediction modeling, installation oversight, and commissioning with measurement verification.</p>
+            <ul style="margin-top: 0.75rem;">
+                <li>Dozens of completed system designs from venue consultation through commissioning</li>
+                <li>Proficient in EASE Focus 3, Soundvision, MAPP 3D, and LAC for prediction modeling</li>
+                <li>Measurement and optimization with SMAART, Open Sound Meter, and REW</li>
+                <li>20+ public resources in the <strong>MKC Audio Toolkit</strong>, including the Audio Math Survival Spreadsheet</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Education & Content -->
+    <section class="section" id="education">
+        <div class="section-header">
+            <div class="section-icon">&#127891;</div>
+            <h2>Education & Content Creation</h2>
+        </div>
+
+        <div class="two-col">
+            <div class="card">
+                <h3>Online Courses</h3>
+                <ul>
+                    <li><strong>Making Sense of Sound</strong> &mdash; foundational audio education</li>
+                    <li><strong>From Chaos to Clarity</strong> &mdash; system optimization and workflow</li>
+                    <li>600+ combined students across both courses</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>YouTube Channel</h3>
+                <ul>
+                    <li>140+ educational videos on audio and system design</li>
+                    <li>3.8 million+ views, 47,000+ subscribers</li>
+                    <li>Trusted resource in the pro audio community</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Guest Appearances & Industry Presence</h3>
+            <p>Podcast and video guest on leading audio platforms:</p>
+            <div style="margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                <a href="https://www.youtube.com/watch?v=63Vs5EAAUP0&t=6773s" target="_blank" class="skill-tag">Office Hours Global</a>
+                <a href="https://www.youtube.com/watch?v=8hK-MmCDRcE&t=1900s" target="_blank" class="skill-tag">Churchfront</a>
+                <a href="https://open.spotify.com/episode/2LMue9IvlOGHJQWqmv5q2m?si=Aqcqt9p5SHu-D8JLQJRkqw" target="_blank" class="skill-tag">Signal To Noise Podcast</a>
+                <a href="https://www.youtube.com/watch?v=eRt4qhhswBI&t=329s" target="_blank" class="skill-tag">Attaway Audio</a>
+                <a href="https://open.spotify.com/episode/4jwXoGwlaEDb0hsjJG4tsl?si=Ordkz4c3QEOzqq6Pdy2oBA" target="_blank" class="skill-tag">Church Sound Podcast</a>
+                <a href="https://www.youtube.com/watch?v=pNkhxnFNUNU&t=2s" target="_blank" class="skill-tag">Audio University</a>
+                <a href="https://www.youtube.com/watch?v=RLEExEd9jJI" target="_blank" class="skill-tag">Sound Design Live</a>
+                <a href="https://www.prosoundweb.com/video-25-corporate-audio-a2-pro-tips/" target="_blank" class="skill-tag">ProSoundWeb</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Shows -->
+    <section class="section" id="shows">
+        <div class="section-header">
+            <div class="section-icon">&#127908;</div>
+            <h2>Live Shows & Production</h2>
+        </div>
+
+        <div class="shows-grid">
+            <div class="card">
+                <div class="show-role">A1 / A2 / Systems Engineer</div>
+                <ul>
+                    <li>2020 Inauguration</li>
+                    <li>Multiple Presidential addresses and broadcasts</li>
+                    <li>Walmart Morning Meetings (Oprah, Martina McBride, Shaq, John Legend)</li>
+                    <li>Jewel (Bentonville Film Festival)</li>
+                    <li>Chris Stapleton (Fly Date)</li>
+                    <li>John Mellencamp (Fly Date)</li>
+                    <li>Marcus Mumford (Fly Date)</li>
+                    <li>David Ramirez (Fly Date)</li>
+                    <li>Heartland Summit NWA</li>
+                    <li>"Bentonville Up" Flying Car Conference</li>
+                    <li>Walmart International YBM</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="show-role">Audio Supervisor</div>
+                <ul>
+                    <li>Rock The Runoff Virtual Concert (John Legend, Ludacris, Justin Timberlake)</li>
+                    <li>Honor Her Wish Virtual Concert (John Batiste, Phoebe Bridgers, Michael Stipe)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills & Certifications -->
+    <section class="section" id="skills">
+        <div class="section-header">
+            <div class="section-icon">&#9733;</div>
+            <h2>Skills & Certifications</h2>
+        </div>
+
+        <div class="card">
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h4>Measurement & Design Software</h4>
+                    <span class="skill-tag">SMAART</span>
+                    <span class="skill-tag">Open Sound Meter</span>
+                    <span class="skill-tag">REW</span>
+                    <span class="skill-tag">EASE Focus 3</span>
+                    <span class="skill-tag">Soundvision</span>
+                    <span class="skill-tag">MAPP 3D</span>
+                    <span class="skill-tag">LAC</span>
+                </div>
+                <div class="skill-category">
+                    <h4>Consoles</h4>
+                    <span class="skill-tag">Yamaha</span>
+                    <span class="skill-tag">Allen & Heath</span>
+                    <span class="skill-tag">Midas</span>
+                    <span class="skill-tag">Behringer</span>
+                    <span class="skill-tag">Soundcraft</span>
+                </div>
+                <div class="skill-category">
+                    <h4>Sound Systems</h4>
+                    <span class="skill-tag">L-Acoustics</span>
+                    <span class="skill-tag">RCF</span>
+                    <span class="skill-tag">JBL</span>
+                    <span class="skill-tag">Meyer</span>
+                    <span class="skill-tag">QSC</span>
+                </div>
+                <div class="skill-category">
+                    <h4>Other Gear</h4>
+                    <span class="skill-tag">Shure RF / Wireless Workbench</span>
+                    <span class="skill-tag">Clear-Com FSII</span>
+                    <span class="skill-tag">RTS Comm</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="two-col" style="margin-top: 1rem;">
+            <div class="card">
+                <h3>Certifications</h3>
+                <ul>
+                    <li>Smaart Operator Level 1</li>
+                    <li>Dante Level 1</li>
+                    <li>L-Acoustics KARA</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Education</h3>
+                <p><strong>Bachelor's in Music</strong></p>
+                <p>Ouachita Baptist University, Class of 2013</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- References -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-icon">&#128101;</div>
+            <h2>References</h2>
+        </div>
+        <div class="card">
+            <div class="two-col">
+                <div>
+                    <p><strong>Cameron Magee</strong></p>
+                    <p style="color: var(--text-light); font-size: 0.9rem;">Owner, avad3 Event Production</p>
+                    <p><a href="mailto:cameron@avad3.com" style="color: var(--deep-teal);">cameron@avad3.com</a></p>
+                </div>
+                <div>
+                    <p><strong>David Long</strong></p>
+                    <p style="color: var(--text-light); font-size: 0.9rem;">Senior Director, Walmart Event Solutions</p>
+                    <p><a href="mailto:david.j.long@walmart.com" style="color: var(--deep-teal);">david.j.long@walmart.com</a></p>
+                </div>
+            </div>
+            <div style="margin-top: 1rem;">
+                <p><strong>Wes Martin</strong></p>
+                <p style="color: var(--text-light); font-size: 0.9rem;">Director of Education, MediaTech Institute</p>
+                <p><a href="mailto:wes@mediatech.edu" style="color: var(--deep-teal);">wes@mediatech.edu</a></p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- RCF Vision Section -->
+<section class="rcf-section" id="rcf-vision">
+    <div class="rcf-inner">
+        <div class="section-header">
+            <div class="section-icon">&#128640;</div>
+            <h2>Insights & Opportunities for RCF</h2>
+        </div>
+
+        <p class="rcf-intro">Beyond my role in system design and education, here's how I can help advance RCF's position in the professional audio market and drive innovation across the company.</p>
+
+        <div class="vision-grid">
+            <div class="vision-card">
+                <div class="vision-icon">&#129302;</div>
+                <h3>AI-Powered System Design</h3>
+                <p>Leverage AI agents to streamline the system design process &mdash; from automated coverage predictions to intelligent speaker selection and configuration. This reduces design time, lowers the barrier for integrators, and positions RCF as a technology-forward manufacturer.</p>
+            </div>
+            <div class="vision-card">
+                <div class="vision-icon">&#127760;</div>
+                <h3>Overhaul RDNet for True IP</h3>
+                <p>Modernize RDNet into a truly IP-based platform. As the industry moves toward AES67, ST 2110, and Dante-native workflows, a ground-up rethink of RDNet's architecture ensures RCF stays competitive and integrates seamlessly into modern AV-over-IP ecosystems.</p>
+            </div>
+            <div class="vision-card">
+                <div class="vision-icon">&#127909;</div>
+                <h3>Grow RCF Academy on YouTube</h3>
+                <p>Apply proven content strategy to build RCF Academy into a leading educational YouTube channel. With my track record of 3.8M+ views and 47K+ subscribers, I can create engaging, technically rigorous content that builds brand loyalty and positions RCF as an industry thought leader.</p>
+            </div>
+            <div class="vision-card">
+                <div class="vision-icon">&#127979;</div>
+                <h3>In-Person Training Programs</h3>
+                <p>Develop and host hands-on training classes for integrators, system designers, and end users. Structured certification programs create product champions in the field and give RCF a direct channel for building deep relationships with the people specifying and installing systems.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer / Contact -->
+<footer class="footer" id="contact">
+    <div class="footer-inner">
+        <div class="contact-grid">
+            <div class="contact-item">
+                <a href="tel:972-322-3681">972-322-3681</a>
+            </div>
+            <div class="contact-item">
+                <a href="mailto:michael@producedbymkc.com">michael@producedbymkc.com</a>
+            </div>
+            <div class="contact-item">
+                Rogers, AR &bull; Nearest Airport: XNA
+            </div>
+            <div class="contact-item">
+                <a href="https://www.producedbymkc.com" target="_blank">producedbymkc.com</a>
+            </div>
+        </div>
+        <p class="footer-note">Michael Curtis &bull; 2026</p>
+    </div>
+</footer>
+
+</body>
+</html>
