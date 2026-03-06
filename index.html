@@ -404,6 +404,30 @@
             max-width: 800px;
         }
 
+        .rcf-intro-bullets {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .rcf-intro-bullets li {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            padding-left: 1.4rem;
+            position: relative;
+        }
+
+        .rcf-intro-bullets li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--coral);
+        }
+
         .vision-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -845,7 +869,11 @@
             <h2>Insights & Opportunities for RCF</h2>
         </div>
 
-        <p class="rcf-intro">Build trust and grow sales through education. Lead with technological innovation. Keep the human touch where it counts.</p>
+        <ul class="rcf-intro-bullets">
+            <li>Build trust and grow sales through education.</li>
+            <li>Lead with technological innovation.</li>
+            <li>Keep the human touch where it counts.</li>
+        </ul>
 
         <div class="vision-card" style="margin-bottom: 1.25rem;">
             <div class="vision-icon">&#127909;</div>
