@@ -1,0 +1,11 @@
+# Photos and images
+resources/general-photos/
+resources/nice-comments/
+*.jpeg
+*.jpg
+*.png
+
+# Keep web-optimized assets
+!resources/headshot-web.jpg
+!resources/logo-web.png
+!resources/Logo.png
